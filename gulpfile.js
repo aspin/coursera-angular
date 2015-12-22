@@ -60,7 +60,7 @@ gulp.task('browser-sync', function () {
    browserSync.init(files, {
       server: {
          baseDir: 'app',
-         index: 'dishdetail.html',
+         index: 'index.html',
          routes: {
            '/bower_components': 'bower_components'
          }
