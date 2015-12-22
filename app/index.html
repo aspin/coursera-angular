@@ -17,6 +17,14 @@
   <link href="styles/mystyles.css" rel="stylesheet">
   <!-- endbuild -->
 
+  <!-- build:js scripts/main.js -->
+  <script src="../bower_components/angular/angular.min.js"></script>
+  <script src="../bower_components/angular-route/angular-route.min.js"></script>
+  <script src="scripts/app.js"></script>
+  <script src="scripts/controllers.js"></script>
+  <script src="scripts/services.js"></script>
+  <!-- endbuild -->
+
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -84,7 +92,7 @@
     </div>
   </header>
 
-  <ng-include src="'menu.html'"></ng-include>
+  <ng-view></ng-view>
 
   <footer class="row-footer">
     <div class="container">
@@ -131,13 +139,6 @@
       </div>
     </div>
   </footer>
-
-  <!-- build:js scripts/main.js -->
-  <script src="../bower_components/angular/angular.min.js"></script>
-  <script src="scripts/controllers.js"></script>
-  <script src="scripts/services.js"></script>
-  <!-- endbuild -->
-
 </body>
 
 </html>

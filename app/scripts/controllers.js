@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('confusionApp', []);
+var app = angular.module('confusionApp');
 
 app.controller('MenuController', function($scope, $menuFactory) {
 
@@ -80,10 +80,9 @@ app.controller('FeedbackController', ['$scope', function($scope) {
   };
 }]);
 
-app.controller('DishDetailController', function($scope, $menuFactory) {
-  $scope.dish = $menuFactory.getDish(3);
+app.controller('DishDetailController', function($scope, $routeParams, $menuFactory) {
+  $scope.dish = $menuFactory.getDish(parseInt($routeParams.id, 10));
   $scope.sortField = 'date';
-
 });
 
 app.controller('DishCommentController', ['$scope', function($scope) {
