@@ -80,12 +80,12 @@ app.controller('FeedbackController', ['$scope', function($scope) {
   };
 }]);
 
-app.controller('DishDetailController', function($scope, $routeParams, $menuFactory) {
-  $scope.dish = $menuFactory.getDish(parseInt($routeParams.id, 10));
+app.controller('DishDetailController', function($scope, $stateParams, $menuFactory) {
+  $scope.dish = $menuFactory.getDish(parseInt($stateParams.id, 10));
   $scope.sortField = 'date';
 });
 
-app.controller('DishCommentController', ['$scope', function($scope) {
+app.controller('DishCommentController', function($scope) {
 
   var defComment = {
     author: '',
@@ -99,9 +99,7 @@ app.controller('DishCommentController', ['$scope', function($scope) {
     $scope.dish.comments.push($scope.comment);
     $scope.commentForm.$setPristine();
     $scope.comment = angular.copy(defComment);
-    // $scope.commentForm.reset();
-    // $scope.comment = defComment;
   };
 
   $scope.date = new Date().toISOString();
-}]);
+});
