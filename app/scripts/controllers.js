@@ -103,3 +103,13 @@ app.controller('DishCommentController', function($scope) {
 
   $scope.date = new Date().toISOString();
 });
+
+app.controller('IndexController', function($scope, $menuFactory, $corporateFactory) {
+  $scope.featured = $menuFactory.getDish(0);
+  $scope.promo = $menuFactory.getPromotion(0);
+  $scope.ec = $corporateFactory.getLeader(3);
+});
+
+app.controller('AboutController', function($scope, $corporateFactory) {
+  $scope.leaders = $corporateFactory.getLeaders();
+});

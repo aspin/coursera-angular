@@ -1,29 +1,29 @@
 'use strict';
 
-var app = angular.module('confusionApp', ['ui.router']);
-
-app.config(function($stateProvider, $urlRouterProvider) {
-  $stateProvider
-    .state('app', {
+angular.module('confusionApp', ['ui.router'])
+  .config(function($stateProvider, $urlRouterProvider) {
+    $stateProvider
+      .state('app', {
       url: '/',
       views: {
         'header': {
           templateUrl: 'views/header.html',
         },
         'content': {
-          template: '<h1>To be Completed</h1>',
+          templateUrl: 'views/home.html',
           controller: 'IndexController'
         },
         'footer': {
           templateUrl: 'views/footer.html',
         }
       }
+
     })
     .state('app.aboutus', {
       url: 'aboutus',
       views: {
         'content@': {
-          template: '<h1>To be Completed</h1>',
+          templateUrl: 'views/aboutus.html',
           controller: 'AboutController'
         }
       }
@@ -37,23 +37,23 @@ app.config(function($stateProvider, $urlRouterProvider) {
         }
       }
     })
-  .state('app.menu', {
-    url: 'menu',
-    views: {
-      'content@': {
-        templateUrl: 'views/menu.html',
-        controller: 'MenuController'
+    .state('app.menu', {
+      url: 'menu',
+      views: {
+        'content@': {
+          templateUrl: 'views/menu.html',
+          controller: 'MenuController'
+        }
       }
-    }
-  })
-  .state('app.dishdetails', {
-    url: 'menu/:id',
-    views: {
-      'content@': {
-        templateUrl: 'views/dishdetail.html',
-        controller: 'DishDetailController'
+    })
+    .state('app.dishdetails', {
+      url: 'menu/:id',
+      views: {
+        'content@': {
+          templateUrl: 'views/dishdetail.html',
+          controller: 'DishDetailController'
+        }
       }
-    }
+    });
+    $urlRouterProvider.otherwise('/');
   });
-  $urlRouterProvider.otherwise('/');
-});
