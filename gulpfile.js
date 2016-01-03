@@ -26,7 +26,7 @@ gulp.task('clean', function() {
 });
 
 gulp.task('usemin', ['jshint'], function() {
-  return gulp.src('app/dishdetail.html')
+  return gulp.src('app/**/*.html')
     .pipe(usemin({
       css: [ minifycss(), rev() ],
       js: [ ngannotate(), uglify(), rev() ]
@@ -66,8 +66,7 @@ gulp.task('browser-sync', function () {
          }
       }
    });
-        // Watch any files in dist/, reload on change
-  gulp.watch(['app/**']).on('change', browserSync.reload);
+   gulp.watch(['app/**']).on('change', browserSync.reload);
 });
 
 gulp.task('watch', ['browser-sync'], function() {

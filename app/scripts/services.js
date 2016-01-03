@@ -201,7 +201,7 @@ app.factory('$corporateFactory', function() {
   ];
 
   corpfac.getLeaders = function() { return leadership; };
-  corpfac.getLeader = function(index) { return leadership[index]}; // Or this, really.
+  corpfac.getLeader = function(index) { return leadership[index]; }; // Or this, really.
 
   return corpfac;
 });
