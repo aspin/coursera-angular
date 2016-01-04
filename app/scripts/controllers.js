@@ -2,12 +2,22 @@
 
 var app = angular.module('confusionApp');
 
-app.controller('MenuController', function($scope, $menuFactory) {
+app.controller('MenuController', function($scope, menuFactory) {
 
   $scope.tab = 1;
   $scope.filtText = '';
   $scope.showDetails = false;
-  $scope.dishes = $menuFactory.getDishes();
+  $scope.showMenu = false;
+  $scope.message = 'Loading...';
+  $scope.dishes = menuFactory.getDishes().query(
+    function(res) {
+      $scope.dishes = res;
+      $scope.showMenu = true;
+    },
+    function(err) {
+      $scope.message = 'Error: ' + err.status + ' ' + err.statusText;
+    }
+  );
 
   $scope.select = function(setTab) {
     $scope.tab = setTab;
@@ -55,17 +65,13 @@ app.controller('ContactController', ['$scope', function($scope) {
 
 }]);
 
-app.controller('FeedbackController', ['$scope', function($scope) {
-
+app.controller('FeedbackController', function($scope, feedbackFactory) {
   $scope.sendFeedback = function() {
-
-    console.log($scope.feedback);
-
     if ($scope.feedback.agree && ($scope.feedback.mychannel === "")) {
       $scope.invalidChannelSelection = true;
-      console.log('incorrect');
     } else {
       $scope.invalidChannelSelection = false;
+      feedbackFactory.getFeedback().save($scope.feedback);
       $scope.feedback = {
         mychannel: "",
         firstName: "",
@@ -75,17 +81,28 @@ app.controller('FeedbackController', ['$scope', function($scope) {
       };
       $scope.feedback.mychannel = "";
       $scope.feedbackForm.$setPristine();
-      console.log($scope.feedback);
     }
   };
-}]);
+});
 
-app.controller('DishDetailController', function($scope, $stateParams, $menuFactory) {
-  $scope.dish = $menuFactory.getDish(parseInt($stateParams.id, 10));
+app.controller('DishDetailController', function($scope, $stateParams, menuFactory) {
+  $scope.message = 'Loading...';
+  $scope.showDish = false;
+  $scope.dish = menuFactory.getDishes().get({ id: parseInt($stateParams.id, 10) }).$promise
+    .then(
+      function(res) {
+        $scope.dish = res;
+        $scope.showDish = true;
+      },
+      function(err) {
+        $scope.message = 'Error: ' + err.status + ' ' + err.statusText;
+      }
+    );
+
   $scope.sortField = 'date';
 });
 
-app.controller('DishCommentController', function($scope) {
+app.controller('DishCommentController', function($scope, menuFactory) {
 
   var defComment = {
     author: '',
@@ -97,6 +114,7 @@ app.controller('DishCommentController', function($scope) {
   $scope.submitComment = function() {
     $scope.comment.date = new Date().toISOString();
     $scope.dish.comments.push($scope.comment);
+    menuFactory.getDishes().update({ id: $scope.dish.id }, $scope.dish);
     $scope.commentForm.$setPristine();
     $scope.comment = angular.copy(defComment);
   };
@@ -104,12 +122,57 @@ app.controller('DishCommentController', function($scope) {
   $scope.date = new Date().toISOString();
 });
 
-app.controller('IndexController', function($scope, $menuFactory, $corporateFactory) {
-  $scope.featured = $menuFactory.getDish(0);
-  $scope.promo = $menuFactory.getPromotion(0);
-  $scope.ec = $corporateFactory.getLeader(3);
+app.controller('IndexController', function($scope, menuFactory, corporateFactory) {
+  $scope.featured = menuFactory.getDishes().get({ id: 0 }).$promise
+    .then(
+      function(res) {
+        $scope.featured = res;
+        $scope.showFeatured = true;
+      },
+      function(err) {
+        $scope.message = 'Error: ' + err.status + ' ' + err.statusText;
+      }
+    )
+  $scope.message = 'Loading...';
+  $scope.showFeatured = false;
+
+  $scope.showPromo = false;
+  $scope.promoMessage = 'Loading...';
+  $scope.promo = menuFactory.getPromotions().get({ id: 0 }).$promise
+    .then(
+      function(res) {
+        $scope.promo = res;
+        $scope.showPromo = true;
+      },
+      function(err) {
+        $scope.promoMessage = 'Error: ' + err.status + ' ' + err.statusText;
+      }
+    )
+
+  $scope.showEc = false;
+  $scope.ecMessage = 'Loading...';
+  $scope.ec = corporateFactory.getLeaders().get({ id: 3 }).$promise
+    .then(
+      function(res) {
+        $scope.ec = res;
+        $scope.showEc = true;
+      },
+      function(err) {
+        $scope.ecMessage = 'Error: ' + err.status + ' ' + err.statusText;
+      }
+    )
 });
 
-app.controller('AboutController', function($scope, $corporateFactory) {
-  $scope.leaders = $corporateFactory.getLeaders();
+app.controller('AboutController', function($scope, corporateFactory) {
+  $scope.showLeaders = false;
+  $scope.message = 'Loading...';
+  $scope.leaders = corporateFactory.getLeaders().query(
+    function(res) {
+      $scope.leaders = res;
+      $scope.showLeaders = true;
+    },
+    function(err) {
+      $scope.message = 'Error: ' + err.status + ' ' + err.statusText;
+    }
+  );
 });

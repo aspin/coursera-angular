@@ -44,8 +44,7 @@ gulp.task('copyfonts', ['clean'], function() {
 gulp.task('imagemin', function() {
   return del(['dist/images']), gulp.src('app/images/**/*')
     .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
-    .pipe(gulp.dest('dist/images'))
-    .pipe(notify({ message: 'Image compression complete.' }));
+    .pipe(gulp.dest('dist/images'));
 });
 
 gulp.task('browser-sync', function () {
@@ -60,11 +59,12 @@ gulp.task('browser-sync', function () {
    browserSync.init(files, {
       server: {
          baseDir: 'app',
-         index: 'views/index.html',
+         index: 'index.html',
          routes: {
            '/bower_components': 'bower_components'
          }
-      }
+      },
+      port: 3001
    });
    gulp.watch(['app/**']).on('change', browserSync.reload);
 });
